@@ -6,7 +6,7 @@ const e = require("express");
 
 const BASE_URL = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s="
 
-/** GET movies with search form --> SearchForm */
+/** GET cocktail recipe with search form --> SearchForm */
 router.get('/search', async (req, res, next) => {
     
     const {recipe} = req.query;

@@ -9,6 +9,8 @@ const express = require("express");
 const router = new express.Router();
 const { createToken } = require("../helpers/tokens");
 const { BadRequestError } = require("../expressError");
+const userAuthSchema = require("../schemas/userAuth.json");
+
 
 
 /** POST /auth/token: { username, password } => { token } 
