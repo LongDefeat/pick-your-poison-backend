@@ -14,44 +14,48 @@ const axios = require("axios");
 
 const router = express.Router();
 
-/** POST / { user } => { user, token } 
- * 
+/** POST / { user } => { user, token }
+ *
  * Adds a new user; this is not the registration endpoint. Only for
  * admin users to add new users. The new user being added can be admin.
- * 
+ *
  * This returns the newly created user an athentication token for them
  * ---> {user: { username, firstName, lastName, isAdmin }}
-*/
+ */
 
-router.post("/", ensureAdmin, async function(req, res, next){
-    try {
-        const validator = jsonschema.validate(req.body, userNewSchema);
-        if(!validator.valid) {
-            const errs = validator.errors.map(e => e.stack);
-            throw new BadRequestError(errs);
-        }
+// router.post("/", ensureAdmin, async function (req, res, next) {
+//   try {
+//     const validator = jsonschema.validate(req.body, userNewSchema);
+//     if (!validator.valid) {
+//       const errs = validator.errors.map((e) => e.stack);
+//       throw new BadRequestError(errs);
+//     }
 
-        const user = await User.register(req.body);
-        const token = createToken(user);
-        res.status(201).json({ user, token });
-    } catch (err){
-        return next(err);
-    }
-})
+//     const user = await User.register(req.body);
+//     const token = createToken(user);
+//     res.status(201).json({ user, token });
+//   } catch (err) {
+//     return next(err);
+//   }
+// });
 
-/** GET / => { users: [ {username, firstName, lastName }, ...] } 
- * 
+/** GET / => { users: [ {username, firstName, lastName }, ...] }
+ *
  * Returns list of all users
  * NEED ALL USERS FUNCTION
-*/
+ */
 
-router.get("/:username", async function(req, res, next){
-    try {
-        const user = await User.get(req.params.username);
-        return res.json( { users: [user] })
-    } catch (err){
-        return next(err);
-    }
+router.get("/:username", async function (req, res, next) {
+  try {
+    const user = await User.get(req.params.username);
+    // return res.json({ users: [user] });
+    console.log(res.json({ user }), "user");
+    return res.json({ user });
+
+    // return res.send(user.data);
+  } catch (err) {
+    return next(err);
+  }
 });
 
 module.exports = router;
