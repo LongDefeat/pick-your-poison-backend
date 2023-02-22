@@ -39,4 +39,24 @@ router.get("/random_recipe", async (req, res, next) => {
   }
 });
 
+/** GET - List all cocktails by first letter
+ *
+ * Ex: http://localhost:3001/cocktailDb/cocktail_by_letter?letter=z
+ *
+ * This yields all cocktails beginning with letter 'z'
+ */
+router.get("/cocktail_by_letter", async (req, res, next) => {
+  const { letter } = req.query;
+  try {
+    const response = await axios.get(
+      `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${letter}`
+    );
+    const cocktails = response.data.drinks;
+    return res.json({ cocktails });
+  } catch (err) {
+    console.log(err);
+    return res.send(err);
+  }
+});
+
 module.exports = router;
