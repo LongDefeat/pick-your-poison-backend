@@ -46,7 +46,7 @@ class User {
 
   /** GET user with data
    *
-   * Returns {username, firstName, lastName, email, isAdmin }
+   * Returns {username, firstName, lastName, email, createdAt }
    */
 
   static async get(username) {
