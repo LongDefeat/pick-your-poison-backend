@@ -59,4 +59,25 @@ router.get("/cocktail_by_letter", async (req, res, next) => {
   }
 });
 
+/** GET all cocktails with an ingredient search
+ *
+ * EX: www.thecocktaildb.com/api/json/v1/1/search.php?ingredient=whiskey
+ *
+ * response = "Damned if you do", "Hot Toddy", "Owen's Grandmother's Revenge"
+ *
+ */
+router.get("/search/ingredient", async (req, res, next) => {
+  const { ingredient } = req.query;
+  try {
+    const ingredientResponse = await axios.get(
+      `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${ingredient}`
+    );
+    const cocktails = ingredientResponse.data.drinks;
+    return res.json({ cocktails });
+  } catch (err) {
+    console.log(err);
+    return res.send(err);
+  }
+});
+
 module.exports = router;
