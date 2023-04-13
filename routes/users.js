@@ -39,6 +39,29 @@ const router = express.Router();
 //   }
 // });
 
+/** POST / { user } => { user, token }
+ *
+ * Adds a new user.
+ * This returns the newly created user an authentication token for them
+ *  ---> {user: { username, firstName, lastName, isAdmin}}
+ */
+
+router.post("/", ensureCorrectUserOrAdmin, async function (req, res, next) {
+  try {
+    const validator = jsonschema.validate(req.body, userName);
+    if (!validator.valid) {
+      const errs = validator.errors.map((e) => e.stack);
+      throw new BadRequestError(errs);
+    }
+
+    const user = await User.register(req.body);
+    const token = createToken(user);
+    return res.status(201).json({ user, token });
+  } catch (err) {
+    return next(err);
+  }
+});
+
 /** GET / => { users: [ {username, firstName, lastName }, ...] }
  *
  * Returns list of all users
@@ -48,11 +71,8 @@ const router = express.Router();
 router.get("/:username", async function (req, res, next) {
   try {
     const user = await User.get(req.params.username);
-    // return res.json({ users: [user] });
     console.log(res.json({ user }), "user");
     return res.json({ user });
-
-    // return res.send(user.data);
   } catch (err) {
     return next(err);
   }

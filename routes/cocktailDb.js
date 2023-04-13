@@ -1,13 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
-const e = require("express");
 const { NotFoundError } = require("../expressError");
 
 const BASE_URL = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=";
-
-// www.thecocktaildb.com/api/json/v1/1/random.php
-const RANDOM_URL = "www.thecocktaildb.com/api/json/v1/1/random.php";
 
 /** GET cocktail recipe with search form --> SearchForm */
 router.get("/search", async (req, res, next) => {
