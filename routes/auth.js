@@ -37,6 +37,21 @@ router.post("/token", async function (req, res, next) {
   }
 });
 
+/** GET / => { users: [ {username, firstName, lastName }, ...] }
+ *
+ * Returns list of all users
+ * NEED ALL USERS FUNCTION
+ */
+
+router.get("/:username", async function (req, res, next) {
+  try {
+    const user = await User.get(req.params.username);
+    return res.json({ user });
+  } catch (err) {
+    return next(err);
+  }
+});
+
 router.post("/register", async function (req, res, next) {
   console.log("registering a user in auth.js");
 
